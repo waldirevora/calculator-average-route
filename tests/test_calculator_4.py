@@ -78,3 +78,20 @@ def test_calculator_4_route_with_non_numeric_value():
 
     assert response.status_code == 400
     assert data["error"] == "Todos os valores de 'numbers' devem ser numéricos."
+
+def test_calculator_4_route_with_invalid_json():
+    """
+    Verifica se a rota rejeita uma requisição com JSON inválido.
+    """
+    client = app.test_client()
+
+    response = client.post(
+        "/calculator_4",
+        data='{"numbers": [10, 20, 30]',
+        content_type="application/json",
+    )
+
+    data = response.get_json()
+
+    assert response.status_code == 400
+    assert data["error"] == "O campo 'numbers' é obrigatório."
